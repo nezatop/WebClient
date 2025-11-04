@@ -6,7 +6,8 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddHttpClient("ApiClient", client =>
 {
-    client.BaseAddress = new Uri("http://localhost:8080/");
+    string baseAddress = builder.Configuration.GetValue<string>("ApiClient:BaseAddress")!;
+    client.BaseAddress = new Uri(baseAddress);
 });
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
