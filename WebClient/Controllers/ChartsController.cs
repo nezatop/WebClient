@@ -10,11 +10,13 @@ namespace WebClient.Controllers
     public class ChartsController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IConfiguration _configuration; // 👈 1. Внедрить
         private readonly JsonSerializerOptions _options = new() { PropertyNameCaseInsensitive = true };
 
-        public ChartsController(IHttpClientFactory httpClientFactory)
+        public ChartsController(IHttpClientFactory httpClientFactory, IConfiguration configuration) // 👈 2. Получить
         {
             _httpClientFactory = httpClientFactory;
+            _configuration = configuration; // 👈 3. Сохранить
         }
 
         public IActionResult Index()
@@ -24,6 +26,9 @@ namespace WebClient.Controllers
         
         public IActionResult RealTime()
         {
+            // 👈 4. Передать URL сервера во View
+            // (Он возьмет его из переменной окружения Render)
+            ViewBag.ServerBaseUrl = _configuration.GetValue<string>("ApiClient:BaseAddress");
             return View();
         }
 
