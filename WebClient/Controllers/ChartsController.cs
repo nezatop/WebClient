@@ -21,6 +21,11 @@ namespace WebClient.Controllers
         {
             return View();
         }
+        
+        public IActionResult RealTime()
+        {
+            return View();
+        }
 
         public async Task<IActionResult> LaserPositions()
         {

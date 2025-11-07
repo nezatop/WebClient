@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Nezatop\\RiderProjects\\WebClient\\WebClient\\WebClient.csproj": {}
+    "D:\\Unity\\Projects\\WebClient\\WebClient\\WebClient.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Nezatop\\RiderProjects\\WebClient\\WebClient\\WebClient.csproj": {
+    "D:\\Unity\\Projects\\WebClient\\WebClient\\WebClient.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Nezatop\\RiderProjects\\WebClient\\WebClient\\WebClient.csproj",
+        "projectUniqueName": "D:\\Unity\\Projects\\WebClient\\WebClient\\WebClient.csproj",
         "projectName": "WebClient",
-        "projectPath": "C:\\Users\\Nezatop\\RiderProjects\\WebClient\\WebClient\\WebClient.csproj",
+        "projectPath": "D:\\Unity\\Projects\\WebClient\\WebClient\\WebClient.csproj",
         "packagesPath": "C:\\Users\\Nezatop\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Nezatop\\RiderProjects\\WebClient\\WebClient\\obj\\",
+        "outputPath": "D:\\Unity\\Projects\\WebClient\\WebClient\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "D:\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Nezatop\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Nezatop\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -38,7 +44,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net9.0": {
@@ -62,7 +68,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files (x86)\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

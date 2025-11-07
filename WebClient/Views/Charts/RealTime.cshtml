@@ -1,0 +1,113 @@
+﻿@{
+    ViewData["Title"] = "Данные в реальном времени";
+}
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-8">
+        <h3>Интенсивность (Освещенность)</h3>
+        <div style="width: 100%; margin: auto;">
+            <canvas id="intensityChart"></canvas>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h3>Текущие значения</h3>
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Температура
+                <span class="badge bg-primary rounded-pill" id="temp-value">--.- °C</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Влажность
+                <span class="badge bg-primary rounded-pill" id="hum-value">-- %</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Освещенность
+                <span class="badge bg-primary rounded-pill" id="light-value">-- %</span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+@section Scripts {
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // 1. Инициализация пустого графика
+    const ctx = document.getElementById('intensityChart');
+    const intensityChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Интенсивность (Освещенность, %)',
+                data: [],
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true, max: 100 }
+            }
+        }
+    });
+
+    // 2. Настройка SignalR-соединения
+    // API_BASE_URL должен указывать на ваш сервер, 
+    // но так как SignalR использует тот же домен, можно просто указать путь
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/dataHub") // 👈 Путь, который мы указали в Program.cs
+        .configureLogging(signalR.LogLevel.Information)
+        .build();
+
+    // 3. Функция для обновления графика
+    function addDataToChart(label, data) {
+        intensityChart.data.labels.push(label);
+        intensityChart.data.datasets[0].data.push(data);
+
+        // Ограничим график 20-ю точками
+        if (intensityChart.data.labels.length > 20) {
+            intensityChart.data.labels.shift();
+            intensityChart.data.datasets[0].data.shift();
+        }
+
+        intensityChart.update();
+    }
+
+    // 4. Обработчик события "ReceiveNewMeasurement" (для графика)
+    connection.on("ReceiveNewMeasurement", (measurement) => {
+        console.log("New measurement received:", measurement);
+
+        const time = new Date(measurement.measurementDate).toLocaleTimeString();
+        const intensity = measurement.intensity;
+
+        addDataToChart(time, intensity);
+    });
+
+    // 5. Обработчик события "ReceiveEnvData" (для плашек)
+    connection.on("ReceiveEnvData", (data) => {
+        console.log("New env data received:", data);
+        document.getElementById('temp-value').innerText = data.temperature.toFixed(1) + " °C";
+        document.getElementById('hum-value').innerText = data.humidity.toFixed(0) + " %";
+        document.getElementById('light-value').innerText = data.light.toFixed(0) + " %";
+    });
+
+    // 6. Запуск соединения
+    async function start() {
+        try {
+            await connection.start();
+            console.log("SignalR Connected.");
+        } catch (err) {
+            console.log(err);
+            setTimeout(start, 5000); // Попробовать переподключиться через 5 сек
+        }
+    };
+
+    connection.onclose(async () => {
+        await start();
+    });
+
+    start();
+
+</script>
+}
